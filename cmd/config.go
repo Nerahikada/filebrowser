@@ -36,6 +36,11 @@ func addConfigFlags(flags *pflag.FlagSet) {
 	flags.String("auth.method", string(auth.MethodJSONAuth), "authentication type")
 	flags.String("auth.header", "", "HTTP header for auth.method=proxy")
 	flags.String("auth.command", "", "command for auth.method=hook")
+	flags.String("auth.jwt-header.header", "", "HTTP header for auth.method=jwt-header")
+	flags.String("auth.jwt-header.aud", "", "The Application Audience (AUD) tag for JWT validation auth.method=jwt-header")
+	flags.String("auth.jwt-header.iss", "", "The Issuer (AUD) for JWT validation auth.method=jwt-header")
+	flags.String("auth.jwt-header.certsurl", "", "The URL to download certs from for JWT validation auth.method=jwt-header")
+	flags.String("auth.jwt-header.usernameClaim", "", "The claim which will contain the username auth.method=jwt-header")
 
 	flags.String("recaptcha.host", "https://www.google.com", "use another host for ReCAPTCHA. recaptcha.net might be useful in China")
 	flags.String("recaptcha.key", "", "ReCaptcha site key")
@@ -82,6 +87,38 @@ func getAuthentication(flags *pflag.FlagSet, defaults ...interface{}) (settings.
 		}
 
 		auther = &auth.ProxyAuth{Header: header}
+	}
+
+	if method == auth.MethodJWTAuth {
+		header := mustGetString(flags, "auth.jwt-header.header")
+		aud := mustGetString(flags, "auth.jwt-header.aud")
+		iss := mustGetString(flags, "auth.jwt-header.iss")
+		certsurl := mustGetString(flags, "auth.jwt-header.certsurl")
+		usernameClaim := mustGetString(flags, "auth.usernameClaim")
+
+		if header == "" {
+			checkErr(nerrors.New("you must set the flag 'auth.header' for method 'jwt-header'"))
+		}
+		if aud == "" {
+			checkErr(nerrors.New("you must set the flag 'auth.aud' for method 'jwt-header'"))
+		}
+		if iss == "" {
+			checkErr(nerrors.New("you must set the flag 'auth.iss' for method 'jwt-header'"))
+		}
+		if certsurl == "" {
+			checkErr(nerrors.New("you must set the flag 'auth.certsurl' for method 'jwt-header'"))
+		}
+		if usernameClaim == "" {
+			checkErr(nerrors.New("you must set the flag 'auth.claim' for method 'jwt-header'"))
+		}
+
+		auther = &auth.JWTAuth{
+			Header:        header,
+			Aud:           aud,
+			Iss:           iss,
+			CertsURL:      certsurl,
+			UsernameClaim: usernameClaim,
+		}
 	}
 
 	if method == auth.MethodNoAuth {
