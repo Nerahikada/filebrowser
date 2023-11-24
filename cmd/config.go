@@ -94,22 +94,22 @@ func getAuthentication(flags *pflag.FlagSet, defaults ...interface{}) (settings.
 		aud := mustGetString(flags, "auth.jwt-header.aud")
 		iss := mustGetString(flags, "auth.jwt-header.iss")
 		certsurl := mustGetString(flags, "auth.jwt-header.certsurl")
-		usernameClaim := mustGetString(flags, "auth.usernameClaim")
+		usernameClaim := mustGetString(flags, "auth.jwt-header.usernameClaim")
 
 		if header == "" {
-			checkErr(nerrors.New("you must set the flag 'auth.header' for method 'jwt-header'"))
+			checkErr(nerrors.New("you must set the flag 'auth.jwt-header.header' for method 'jwt-header'"))
 		}
 		if aud == "" {
-			checkErr(nerrors.New("you must set the flag 'auth.aud' for method 'jwt-header'"))
+			checkErr(nerrors.New("you must set the flag 'auth.jwt-header.aud' for method 'jwt-header'"))
 		}
 		if iss == "" {
-			checkErr(nerrors.New("you must set the flag 'auth.iss' for method 'jwt-header'"))
+			checkErr(nerrors.New("you must set the flag 'auth.jwt-header.iss' for method 'jwt-header'"))
 		}
 		if certsurl == "" {
-			checkErr(nerrors.New("you must set the flag 'auth.certsurl' for method 'jwt-header'"))
+			checkErr(nerrors.New("you must set the flag 'auth.jwt-header.certsurl' for method 'jwt-header'"))
 		}
 		if usernameClaim == "" {
-			checkErr(nerrors.New("you must set the flag 'auth.claim' for method 'jwt-header'"))
+			checkErr(nerrors.New("you must set the flag 'auth.jwt-header.usernameClaim' for method 'jwt-header'"))
 		}
 
 		auther = &auth.JWTAuth{
