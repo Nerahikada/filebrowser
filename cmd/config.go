@@ -141,7 +141,6 @@ func authInitHook(flags *pflag.FlagSet, defaultAuther map[string]interface{}) au
 	return &auth.HookAuth{Command: command}
 }
 
-//nolint:gocyclo
 func getAuthentication(flags *pflag.FlagSet, defaults ...interface{}) (settings.AuthMethod, auth.Auther) {
 	method := settings.AuthMethod(mustGetString(flags, "auth.method"))
 
