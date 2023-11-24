@@ -51,7 +51,7 @@ func (a *JWTAuth) Auth(r *http.Request, usr users.Store, stg *settings.Settings,
 		return nil, os.ErrPermission
 	}
 
-	payload := map[string]string{}
+	payload := map[string]any{}
 	err = token.Claims(&payload)
 	if err != nil {
 		return nil, os.ErrPermission
