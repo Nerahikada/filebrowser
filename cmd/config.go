@@ -163,18 +163,18 @@ func getAuthentication(flags *pflag.FlagSet, defaults ...interface{}) (settings.
 
 	var auther auth.Auther
 	switch method {
-		case auth.MethodProxyAuth:
-			auther = authInitProxy(flags, defaultAuther)
-		case auth.MethodJWTAuth:
-			auther = authInitJWT(flags)
-		case auth.MethodNoAuth:
-			auther = &auth.NoAuth{}
-		case auth.MethodJSONAuth:
-			auther = authInitJSON(flags, defaultAuther)
-		case auth.MethodHookAuth:
-			auther = authInitHook(flags, defaultAuther)
-		default:
-			panic(errors.ErrInvalidAuthMethod)
+	case auth.MethodProxyAuth:
+		auther = authInitProxy(flags, defaultAuther)
+	case auth.MethodJWTAuth:
+		auther = authInitJWT(flags)
+	case auth.MethodNoAuth:
+		auther = &auth.NoAuth{}
+	case auth.MethodJSONAuth:
+		auther = authInitJSON(flags, defaultAuther)
+	case auth.MethodHookAuth:
+		auther = authInitHook(flags, defaultAuther)
+	default:
+		panic(errors.ErrInvalidAuthMethod)
 	}
 
 	return method, auther
