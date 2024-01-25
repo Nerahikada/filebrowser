@@ -2,7 +2,11 @@ package auth
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	nerrors "errors"
+	"log"
+	"math"
 	"net/http"
 	"os"
 	"sync"
@@ -59,7 +63,11 @@ func (a *JWTAuth) Auth(r *http.Request, usr users.Store, stg *settings.Settings,
 
 	user, err := usr.Get(srv.Root, payload[a.UsernameClaim])
 	if nerrors.Is(err, errors.ErrNotExist) {
-		return nil, os.ErrPermission
+		user, err := a.createNewUser(payload[a.UsernameClaim].(string), usr, stg, srv)
+		if err != nil {
+			return nil, err
+		}
+		return user, nil
 	}
 
 	return user, err
@@ -68,4 +76,54 @@ func (a *JWTAuth) Auth(r *http.Request, usr users.Store, stg *settings.Settings,
 // LoginPage tells that proxy auth doesn't require a login page.
 func (a *JWTAuth) LoginPage() bool {
 	return false
+}
+
+func (a *JWTAuth) createNewUser(name string, usr users.Store, stg *settings.Settings, srv *settings.Server) (*users.User, error) {
+	rnd, err := randomBase64String(16)
+	if err != nil {
+		return nil, err
+	}
+	pwd, err := users.HashPwd(rnd)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &users.User{
+		Username:     name,
+		Password:     pwd,
+		LockPassword: true,
+	}
+	stg.Defaults.Apply(user)
+
+	home, err := stg.MakeUserDir(user.Username, user.Scope, srv.Root)
+	if err != nil {
+		return nil, err
+	}
+	user.Scope = home
+
+	err = usr.Save(user)
+	if nerrors.Is(err, errors.ErrExist) {
+		user, err := usr.Get(srv.Root, user.Username)
+		if err != nil {
+			return nil, err
+		}
+		return user, nil
+	} else if err != nil {
+		return nil, err
+	}
+
+	log.Printf("new user: %s, home dir: [%s].", user.Username, user.Scope)
+
+	return user, nil
+}
+
+// see: https://stackoverflow.com/a/55860599
+func randomBase64String(l int) (string, error) {
+	buff := make([]byte, int(math.Ceil(float64(l)*0.75)))
+	_, err := rand.Read(buff)
+	if err != nil {
+		return "", err
+	}
+	str := base64.RawURLEncoding.EncodeToString(buff)
+	return str[:l], nil
 }
