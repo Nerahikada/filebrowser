@@ -63,7 +63,7 @@ func (a *JWTAuth) Auth(r *http.Request, usr users.Store, stg *settings.Settings,
 
 	user, err := usr.Get(srv.Root, payload[a.UsernameClaim])
 	if nerrors.Is(err, errors.ErrNotExist) {
-		user, err := a.createNewUser(payload[a.UsernameClaim].(string), usr, stg, srv)
+		user, err = a.createNewUser(payload[a.UsernameClaim].(string), usr, stg, srv)
 		if err != nil {
 			return nil, err
 		}
@@ -79,7 +79,7 @@ func (a *JWTAuth) LoginPage() bool {
 }
 
 func (a *JWTAuth) createNewUser(name string, usr users.Store, stg *settings.Settings, srv *settings.Server) (*users.User, error) {
-	rnd, err := randomBase64String(16)
+	rnd, err := randomBase64String(16) //nolint:gomnd
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (a *JWTAuth) createNewUser(name string, usr users.Store, stg *settings.Sett
 
 	err = usr.Save(user)
 	if nerrors.Is(err, errors.ErrExist) {
-		user, err := usr.Get(srv.Root, user.Username)
+		user, err = usr.Get(srv.Root, user.Username)
 		if err != nil {
 			return nil, err
 		}
@@ -119,7 +119,7 @@ func (a *JWTAuth) createNewUser(name string, usr users.Store, stg *settings.Sett
 
 // see: https://stackoverflow.com/a/55860599
 func randomBase64String(l int) (string, error) {
-	buff := make([]byte, int(math.Ceil(float64(l)*0.75)))
+	buff := make([]byte, int(math.Ceil(float64(l)*0.75))) //nolint:gomnd
 	_, err := rand.Read(buff)
 	if err != nil {
 		return "", err
