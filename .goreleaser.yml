@@ -54,8 +54,8 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64"
-      - "filebrowser/filebrowser:v{{ .Major }}-amd64"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64"
+      - "nerahikada/filebrowser:v{{ .Major }}-amd64"
     extra_files:
       - docker_config.json
       - healthcheck.sh
@@ -73,8 +73,8 @@ dockers:
     goos: linux
     goarch: arm64
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64"
-      - "filebrowser/filebrowser:v{{ .Major }}-arm64"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64"
+      - "nerahikada/filebrowser:v{{ .Major }}-arm64"
     extra_files:
       - docker_config.json
       - healthcheck.sh
@@ -93,8 +93,8 @@ dockers:
     goarch: arm
     goarm: '6'
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-armv6"
-      - "filebrowser/filebrowser:v{{ .Major }}-armv6"
+      - "nerahikada/filebrowser:{{ .Tag }}-armv6"
+      - "nerahikada/filebrowser:v{{ .Major }}-armv6"
     extra_files:
       - docker_config.json
       - healthcheck.sh
@@ -113,8 +113,8 @@ dockers:
     goarch: arm
     goarm: '7'
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-armv7"
-      - "filebrowser/filebrowser:v{{ .Major }}-armv7"
+      - "nerahikada/filebrowser:{{ .Tag }}-armv7"
+      - "nerahikada/filebrowser:v{{ .Major }}-armv7"
     extra_files:
       - docker_config.json
       - healthcheck.sh
@@ -133,8 +133,8 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64-s6"
-      - "filebrowser/filebrowser:v{{ .Major }}-amd64-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64-s6"
+      - "nerahikada/filebrowser:v{{ .Major }}-amd64-s6"
     extra_files:
       - docker/root
   -
@@ -151,39 +151,39 @@ dockers:
     goos: linux
     goarch: arm64
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64-s6"
-      - "filebrowser/filebrowser:v{{ .Major }}-arm64-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64-s6"
+      - "nerahikada/filebrowser:v{{ .Major }}-arm64-s6"
     extra_files:
       - docker/root
 docker_manifests:
-  - name_template: "filebrowser/filebrowser:latest"
+  - name_template: "nerahikada/filebrowser:latest"
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64"
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64"
-      - "filebrowser/filebrowser:{{ .Tag }}-armv7"
-  - name_template: "filebrowser/filebrowser:{{ .Tag }}"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64"
+      - "nerahikada/filebrowser:{{ .Tag }}-armv7"
+  - name_template: "nerahikada/filebrowser:{{ .Tag }}"
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64"
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64"
-      - "filebrowser/filebrowser:{{ .Tag }}-armv7"
-  - name_template: "filebrowser/filebrowser:v{{ .Major }}"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64"
+      - "nerahikada/filebrowser:{{ .Tag }}-armv7"
+  - name_template: "nerahikada/filebrowser:v{{ .Major }}"
     image_templates:
-      - "filebrowser/filebrowser:v{{ .Major }}-amd64"
-      - "filebrowser/filebrowser:v{{ .Major }}-arm64"
-      - "filebrowser/filebrowser:v{{ .Major }}-armv7"
+      - "nerahikada/filebrowser:v{{ .Major }}-amd64"
+      - "nerahikada/filebrowser:v{{ .Major }}-arm64"
+      - "nerahikada/filebrowser:v{{ .Major }}-armv7"
 ## s6 image manifests
-  - name_template: "filebrowser/filebrowser:s6"
+  - name_template: "nerahikada/filebrowser:s6"
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64-s6"
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64-s6"
-  - name_template: "filebrowser/filebrowser:{{ .Tag }}-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64-s6"
+  - name_template: "nerahikada/filebrowser:{{ .Tag }}-s6"
     image_templates:
-      - "filebrowser/filebrowser:{{ .Tag }}-amd64-s6"
-      - "filebrowser/filebrowser:{{ .Tag }}-arm64-s6"
-  - name_template: "filebrowser/filebrowser:v{{ .Major }}-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-amd64-s6"
+      - "nerahikada/filebrowser:{{ .Tag }}-arm64-s6"
+  - name_template: "nerahikada/filebrowser:v{{ .Major }}-s6"
     image_templates:
-      - "filebrowser/filebrowser:v{{ .Major }}-amd64-s6"
-      - "filebrowser/filebrowser:v{{ .Major }}-arm64-s6"
+      - "nerahikada/filebrowser:v{{ .Major }}-amd64-s6"
+      - "nerahikada/filebrowser:v{{ .Major }}-arm64-s6"
 brews:
   - name: filebrowser
     repository:
