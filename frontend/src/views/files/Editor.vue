@@ -84,7 +84,7 @@ export default {
     this.editor.destroy();
   },
   mounted: function () {
-    const fileContent = this.req.content || "";
+    this.fileContent = this.req.content || "";
 
     ace.config.set(
       "basePath",
@@ -92,7 +92,7 @@ export default {
     );
 
     this.editor = ace.edit("editor", {
-      value: fileContent,
+      value: this.fileContent,
       showPrintMargin: false,
       readOnly: this.req.type === "textImmutable",
       theme: "ace/theme/chrome",
@@ -128,7 +128,9 @@ export default {
       buttons.loading("save");
 
       try {
-        await api.put(this.$route.path, this.editor.getValue());
+        const currentContent = this.editor.getValue();
+        await api.put(this.$route.path, currentContent);
+        this.fileContent = currentContent;
         buttons.success(button);
       } catch (e) {
         buttons.done(button);
@@ -136,9 +138,8 @@ export default {
       }
     },
     close() {
-      const originalContent = this.req.content;
       const currentContent = this.editor.getValue();
-      if (originalContent !== currentContent) {
+      if (this.fileContent !== currentContent) {
         this.$store.commit("showHover", "discardEditorChanges");
         return;
       }
